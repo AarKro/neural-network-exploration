@@ -1,5 +1,5 @@
 import { NeuralNetwork, utilities } from "brain.js";
-import trainingData from "./trainingData.json";
+import trainingData from "./assets/trainingData/trainingData_2.json";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let net: any;

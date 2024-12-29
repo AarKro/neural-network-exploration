@@ -79,6 +79,7 @@ export const TileMatrix: FC = () => {
     ];
 
     setRecordedData(trainingData);
+    clearTiles();
   }
 
   const copyRecording = () => {
@@ -87,25 +88,30 @@ export const TileMatrix: FC = () => {
 
   return (
     <div>
-      <div className="controls">
-        <div>
-          <button onClick={clearTiles}>clear</button>
-          <button onClick={copyTiles}>copy raw</button>
-          <button onClick={analyseTiles}>analyse</button>
-        </div>
-        <div>
-          <button onClick={record}>record</button>
-          <input className="data-label" type="text" maxLength={1} value={dataLabel} onChange={(event) => setDataLabel(event.target.value)}/>
-          <button onClick={copyRecording}>copy recordings</button>
-        </div>
-      </div>
-
       <div className="tile-matrix">
         {tileMap.map((row, x) => (
           row.map((_, y) => (
             <Tile key={x + y} x={x} y={y} updateTile={updateTileInMatrix} />
           ))
         ))}
+      </div>
+      
+      <div className="controls main">
+        <button onClick={clearTiles}>clear</button>
+        <button onClick={analyseTiles}>analyse</button>
+      </div>
+
+      <hr/>
+
+      <div className="controls">
+        <div>
+          <button onClick={copyTiles}>copy instance raw</button>
+        </div>
+        <div>
+          <button onClick={record}>record</button>
+          <input className="data-label" type="text" maxLength={1} value={dataLabel} onChange={(event) => setDataLabel(event.target.value)}/>
+          <button onClick={copyRecording}>copy recordings</button>
+        </div>
       </div>
     </div>
   )

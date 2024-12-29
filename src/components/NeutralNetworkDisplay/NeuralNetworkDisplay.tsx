@@ -22,11 +22,11 @@ export const NeuralNetworkDisplay: FC = () => {
   return (
     <div className="results">
       <div>
-        <h3>Top Matches</h3>
+        <h3>Predictions by Score</h3>
         <div>
           <table>
             <tbody>
-              {sortedPredictionsByScore.slice(0, 3).map((prediction) => (
+              {sortedPredictionsByScore.map((prediction) => (
                 <tr key={prediction.key}>
                   <td>{prediction.key}</td>
                   <td>{(prediction.value * 100).toFixed(2)}%</td>
@@ -37,7 +37,7 @@ export const NeuralNetworkDisplay: FC = () => {
         </div>
       </div>
       <div>
-        <h3>Predictions Table</h3>
+        <h3>Predictions by Alphabet</h3>
         <div>
           <table>
             <tbody>

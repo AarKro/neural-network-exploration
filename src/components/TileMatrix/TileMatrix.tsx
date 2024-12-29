@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import { useAtom } from "jotai";
 import { tileMapAtom, updateTileAtom, isMouseDownAtom, Position, networkOutputAtom } from "../../jotaiStore";
 import { initTileMatrix } from "../../utils";
@@ -6,11 +6,16 @@ import { Tile } from "../Tile/Tile";
 import { runNetwork } from "../../neuralNetworkHandler";
 import "./TileMatrix.css";
 
+type TrainingData = { output: { [k: string]: 1 }; input: number[]; }[];
+
 export const TileMatrix: FC = () => {
   const [ tileMap, setTileMap ] = useAtom(tileMapAtom);
   const [ , updateTile ] = useAtom(updateTileAtom);
   const [ , setIsMouseDown ] = useAtom(isMouseDownAtom);
   const [ , setNetworkOutput ] = useAtom(networkOutputAtom);
+
+  const [ dataLabel, setDataLabel ] = useState<string>("");
+  const [ recordedData, setRecordedData ] = useState<TrainingData>([]);
 
   useEffect(() => {
     // register mouse down tracker
@@ -55,14 +60,45 @@ export const TileMatrix: FC = () => {
     setNetworkOutput(output);
   }
 
+  const record = () => {
+    if (!dataLabel) {
+      return;
+    }
+
+    const tileMatrix: number[] = [];
+
+    tileMap.forEach((row) => {
+      row.forEach((tile) => {
+        tileMatrix.push(Number(tile));
+      })
+    })
+
+    const trainingData: TrainingData = [
+      ...recordedData,
+      { output: { [dataLabel.toUpperCase()]: 1 }, input: tileMatrix }
+    ];
+
+    setRecordedData(trainingData);
+  }
+
+  const copyRecording = () => {
+    navigator.clipboard.writeText(JSON.stringify(recordedData));
+  }
+
   return (
     <div>
-      <button onClick={() => clearTiles()}>clear</button>
-      <button onClick={() => copyTiles()}>copy</button>
-      <button onClick={() => analyseTiles()}>analyse</button>
-
-      <br/>
-      <br/>
+      <div className="controls">
+        <div>
+          <button onClick={clearTiles}>clear</button>
+          <button onClick={copyTiles}>copy raw</button>
+          <button onClick={analyseTiles}>analyse</button>
+        </div>
+        <div>
+          <button onClick={record}>record</button>
+          <input className="data-label" type="text" maxLength={1} value={dataLabel} onChange={(event) => setDataLabel(event.target.value)}/>
+          <button onClick={copyRecording}>copy recordings</button>
+        </div>
+      </div>
 
       <div className="tile-matrix">
         {tileMap.map((row, x) => (

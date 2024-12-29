@@ -4,3 +4,20 @@
   width: min-content;
   border: thin solid grey;
 }
+
+.controls {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+
+  .data-label {
+    text-transform: uppercase;
+    width: 5ch;
+    padding: 5px;
+    text-align: center;
+  }
+
+  button {
+    padding: 5px;
+  }
+}

@@ -7,9 +7,6 @@ export const App: FC = () => {
   return (
     <main>
       <TileMatrix/>
-
-      <br/>
-
       <NeuralNetworkDisplay/>
     </main>
   )
